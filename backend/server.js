@@ -12,13 +12,12 @@ const PORT = process.env.PORT || 5001;
 async function initDB() {
   try {
     await sql`CREATE TABLE IF NOT EXISTS transactions(
-    id SERIAL PRIMARY KEY,
-    user_id VARCHAR(255)NOT NULL,
-    title VARCHAR(255)NOT NUL,
-    amount Decimal(10,2)NOT NUL,
-    category VARCHAR(255)NOT NUL,
-    created_at DATE NOT NULL DEFOULT CURRENT_DATE
-    
+      id SERIAL PRIMARY KEY,
+      user_id VARCHAR(255) NOT NULL,
+      title  VARCHAR(255) NOT NULL,
+      amount  DECIMAL(10,2) NOT NULL,
+      category VARCHAR(255) NOT NULL,
+      created_at DATE NOT NULL DEFAULT CURRENT_DATE
     )`;
     console.log("Database initialized successfully");
   } catch (error) {
@@ -30,10 +29,8 @@ async function initDB() {
 connectDB(process.env.DATABASE_URL);
 
 app.get("/", (req, res) => {
-  res.send("It's working 123 fine");
+  res.send("It's working");
 });
-
-console.log("my port:", process.env.PORT);
 
 app.listen(5001, () => {
   console.log("server is up and running on PORT:", PORT);
