@@ -7,7 +7,12 @@ dotenv.config();
 
 const app = express();
 
+//our custum simple middleware
 app.use(express.json());
+// app.use((req, res, next) => {
+//   console.log("Hey we hit a req,the method is", req.method);
+//   next();
+// });
 
 const PORT = process.env.PORT || 5001;
 
@@ -35,14 +40,22 @@ async function initDB() {
   }
 }
 
-// app.post("api/transactions",(req, res)=>{
-//   //title,amount,category,user_id
-//   try {
-//     const (title,amount,category,user_id)=req.body
-//   } catch (error) {
+app.post("api/transactions", (req, res) => {
+  //title,amount,category,user_id
+  try {
+    const { title, amount, category, user_id } = req.body;
 
-//   }
-// })
+    if (!title || !amount || !category || !user_id === undefined) {
+      return res.status(400).json({ message: "All fieled are required" });
+    }
+  } catch (error) {
+    console.log("Error create in the transaction", error);
+    res.status(500).json({ message: "internal server error" });
+  }
+});
+app.get("/", (req, res) => {
+  res.send("it's working");
+});
 
 initDB().then(() => {
   app.listen(PORT, () => {
