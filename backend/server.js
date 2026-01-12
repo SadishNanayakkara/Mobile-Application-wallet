@@ -7,6 +7,8 @@ dotenv.config();
 
 const app = express();
 
+app.use(express.json());
+
 const PORT = process.env.PORT || 5001;
 
 async function initDB() {
@@ -19,6 +21,13 @@ async function initDB() {
       category VARCHAR(255) NOT NULL,
       created_at DATE NOT NULL DEFAULT CURRENT_DATE
     )`;
+
+    // DECIMAL (10,2)
+    // means: a fixed-point number with:
+    // 10 digits total
+    // 2 digits after the decimal point
+    // so: the max value it can store is 99999999.99 (8 digits before the decimal, 2 after)
+
     console.log("Database initialized successfully");
   } catch (error) {
     console.log("ERROR initializing database:", error);
@@ -26,15 +35,14 @@ async function initDB() {
   }
 }
 
-connectDB(process.env.DATABASE_URL);
+// app.post("api/transactions",(req, res)=>{
+//   //title,amount,category,user_id
+//   try {
+//     const (title,amount,category,user_id)=req.body
+//   } catch (error) {
 
-app.get("/", (req, res) => {
-  res.send("It's working");
-});
-
-app.listen(5001, () => {
-  console.log("server is up and running on PORT:", PORT);
-});
+//   }
+// })
 
 initDB().then(() => {
   app.listen(PORT, () => {
